@@ -540,7 +540,9 @@ NSString *const errorMethod = @"error";
 
       CVPixelBufferRef nextBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
       CMTime nextSampleTime = CMTimeSubtract(_lastVideoSampleTime, _videoTimeOffset);
-      [_videoAdaptor appendPixelBuffer:nextBuffer withPresentationTime:nextSampleTime];
+      if (_videoWriterInput.readyForMoreMediaData) {
+        [_videoAdaptor appendPixelBuffer:nextBuffer withPresentationTime:nextSampleTime];
+      }
     } else {
       CMTime dur = CMSampleBufferGetDuration(sampleBuffer);
 
